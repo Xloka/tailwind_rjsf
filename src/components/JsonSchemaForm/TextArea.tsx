@@ -15,7 +15,7 @@ type Props = {
   otherProps?: { multiline: boolean; rows: any; maxRows: any };
 };
 
-const TextArea = (props: Props|Readonly<Props>) => {
+const TextArea = (props: Props) => {
   const { form } = props;
   return (
     <Text

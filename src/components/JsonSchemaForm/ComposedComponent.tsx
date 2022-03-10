@@ -38,7 +38,7 @@ const getDisplayName = (WrappedComponent: any) =>
 export default (ComposedComponent: any, defaultProps = {}) =>
   class Composed extends React.Component<Props> {
     displayName: string;
-    constructor(props: Props | Readonly<Props>) {
+    constructor(props: Props) {
       super(props);
       this.displayName = `ComposedComponent(${getDisplayName(
         ComposedComponent
@@ -47,7 +47,7 @@ export default (ComposedComponent: any, defaultProps = {}) =>
       this.state = Composed.getDerivedStateFromProps(this.props);
     }
 
-    static getDerivedStateFromProps(nextProps: Props | Readonly<Props>) {
+    static getDerivedStateFromProps(nextProps: Props) {
       const { errorText, form, showErrors } = nextProps;
       const value = defaultValue(nextProps);
       if (!showErrors) {

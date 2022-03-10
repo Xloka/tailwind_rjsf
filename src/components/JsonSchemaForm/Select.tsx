@@ -76,7 +76,7 @@ function Select(props: { form: any; model?: any; error?: any; setDefault?: any; 
       <select
         value={currentValue}
         placeholder={form.placeholder}
-        disabled={form.readonly}
+        disabled={form?.readonly}
         onChange={onSelected}
         {...form.selectProps}
       >

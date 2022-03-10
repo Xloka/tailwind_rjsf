@@ -16,7 +16,7 @@ type Props = {
 
 class Text extends React.Component<Props> {
   static defaultProps: { otherProps: any };
-  constructor(props: Props | Readonly<Props>) {
+  constructor(props: Props) {
     super(props);
     const { model, form, value, setDefault } = this.props;
     const { key } = form;
