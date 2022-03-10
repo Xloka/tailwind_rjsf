@@ -44,10 +44,10 @@ export default (ComposedComponent: any, defaultProps = {}) =>
         ComposedComponent
       )})`;
       this.onChangeValidate = this.onChangeValidate.bind(this);
-      this.state = this.getDerivedStateFromProps(this.props);
+      this.state = Composed.getDerivedStateFromProps(this.props);
     }
 
-    getDerivedStateFromProps(nextProps: Props | Readonly<Props>) {
+    static getDerivedStateFromProps(nextProps: Props | Readonly<Props>) {
       const { errorText, form, showErrors } = nextProps;
       const value = defaultValue(nextProps);
       if (!showErrors) {

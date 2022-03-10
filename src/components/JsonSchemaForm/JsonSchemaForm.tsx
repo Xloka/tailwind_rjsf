@@ -7,17 +7,17 @@ import Select from "./Select";
 import DateComponent from "./Date";
 
 type Props = {
-  onModelChange: any;
-  errors: any;
+  onModelChange?: any;
+  errors?: any;
   schema: any;
   form: any;
-  ignore: any;
-  option: any;
+  ignore?: any;
+  option?: any;
   model: any;
-  className: any;
-  mapper: any;
+  className?: any;
+  mapper?: any;
   showErrors?: boolean;
-  evalContext: any;
+  evalContext?: any;
 };
 
 const formatDate = (date: string | Date) => {
