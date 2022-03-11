@@ -69,12 +69,12 @@ function Select(props: { form: any; model?: any; error?: any; setDefault?: any; 
   }
 
   return (
-    <div fullWidth error={!!error} {...form.otherProps}>
+    <div {...form.otherProps}>
       <label required={form.required} {...form.labelProps}>
         {form.title}
       </label>
       <select
-        value={currentValue}
+        defaultValue={currentValue}
         placeholder={form.placeholder}
         disabled={form?.readonly}
         onChange={onSelected}
@@ -82,9 +82,7 @@ function Select(props: { form: any; model?: any; error?: any; setDefault?: any; 
       >
         {menuItems}
       </select>
-      <p {...form.helperTextProps}>
-        {(error || form.description)}
-      </p>
+      <p {...form.helperTextProps}>{error || form.description}</p>
     </div>
   );
 }

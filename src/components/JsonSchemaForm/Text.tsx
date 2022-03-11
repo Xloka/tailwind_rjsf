@@ -26,28 +26,30 @@ class Text extends React.Component<Props> {
   render() {
     const { form, error, value, onChangeValidate, otherProps } = this.props;
     return (
-      <div fullWidth error={!!error} {...form.otherProps}>
+      <div className="">
         <label>{form.title}</label>
         {form.type === "textarea" ? (
-          <textarea style={form.style} {...form.otherProps} {...otherProps}>
-            {value || ""}
-          </textarea>
+          <textarea
+            style={form.style}
+            defaultValue={value || ""}
+            {...form.otherProps}
+            {...otherProps}
+          ></textarea>
         ) : (
           <input
             type={form.type}
             placeholder={form.placeholder}
-            helperText={error || form.description}
-            error={!!error}
             onChange={onChangeValidate}
-            value={value || ""}
+            defaultValue={value || ""}
             disabled={form.readonly}
-            fullWidth
             required={form.required}
             style={form.style}
             {...otherProps}
             {...form.otherProps}
           />
         )}
+        {form.description && <p className="text-sm">{form.description}</p>}
+        {error && <div className="error">{error}</div>}
       </div>
     );
   }

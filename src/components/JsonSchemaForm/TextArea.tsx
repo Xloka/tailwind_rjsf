@@ -12,7 +12,7 @@ type Props = {
   setDefault: any;
   error: any;
   onChangeValidate: any;
-  otherProps?: { multiline: boolean; rows: any; maxRows: any };
+  otherProps?: { multiline?: boolean; rows?: any; maxRows?: any };
 };
 
 const TextArea = (props: Props) => {
@@ -21,9 +21,7 @@ const TextArea = (props: Props) => {
     <Text
       {...props}
       otherProps={{
-        multiline: true,
         rows: form.rows,
-        maxRows: form.maxRows,
       }}
     />
   );
