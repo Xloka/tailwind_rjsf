@@ -5,6 +5,7 @@ import utils from "./utils";
 import Text from "./Text";
 import Select from "./Select";
 import DateComponent from "./Date";
+import TextArea from "./TextArea";
 
 type Props = {
   onModelChange?: any;
@@ -34,7 +35,7 @@ class JsonSchemaForm extends Component<Props> {
     number: Number,
     text: Text,
     password: Text,
-    // textarea: TextArea,
+    textarea: TextArea,
     // markdown: Markdown,
     // textsuggest: TextSuggest,
     select: Select,
@@ -44,7 +45,7 @@ class JsonSchemaForm extends Component<Props> {
     // timestamp: Timestamp,
     // checkbox: Checkbox,
     // help: Help,
-    array: Array,
+    // array: Array,
     // tBoolean: TripleBoolean,
     // fieldset: FieldSet,
     // tuple: FieldSet,

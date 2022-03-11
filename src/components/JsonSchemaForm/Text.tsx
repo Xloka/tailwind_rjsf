@@ -1,5 +1,5 @@
-import React from 'react'
-import ComposedComponent from './ComposedComponent'
+import React from "react";
+import ComposedComponent from "./ComposedComponent";
 
 type Props = {
   errorText: any;
@@ -26,27 +26,35 @@ class Text extends React.Component<Props> {
   render() {
     const { form, error, value, onChangeValidate, otherProps } = this.props;
     return (
-      <input
-        type={form.type}
-        label={form.title}
-        placeholder={form.placeholder}
-        helperText={error || form.description}
-        error={!!error}
-        onChange={onChangeValidate}
-        value={value || ""}
-        disabled={form.readonly}
-        fullWidth
-        required={form.required}
-        style={form.style}
-        {...otherProps}
-        {...form.otherProps}
-      />
+      <div fullWidth error={!!error} {...form.otherProps}>
+        <label>{form.title}</label>
+        {form.type === "textarea" ? (
+          <textarea style={form.style} {...form.otherProps} {...otherProps}>
+            {value || ""}
+          </textarea>
+        ) : (
+          <input
+            type={form.type}
+            placeholder={form.placeholder}
+            helperText={error || form.description}
+            error={!!error}
+            onChange={onChangeValidate}
+            value={value || ""}
+            disabled={form.readonly}
+            fullWidth
+            required={form.required}
+            style={form.style}
+            {...otherProps}
+            {...form.otherProps}
+          />
+        )}
+      </div>
     );
   }
 }
 
 Text.defaultProps = {
-  otherProps: undefined
-}
+  otherProps: undefined,
+};
 
-export default ComposedComponent(Text)
+export default ComposedComponent(Text);
