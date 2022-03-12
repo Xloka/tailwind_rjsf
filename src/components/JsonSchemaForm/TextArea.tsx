@@ -1,19 +1,8 @@
 import React from "react";
 import ComposedComponent from "./ComposedComponent";
 import Text from "./Text";
+import { Props } from "../../type";
 
-type Props = {
-  errorText: any;
-  showErrors: boolean;
-  onChange: any;
-  form: any;
-  model: any;
-  value: any;
-  setDefault: any;
-  error: any;
-  onChangeValidate: any;
-  otherProps?: { multiline?: boolean; rows?: any; maxRows?: any };
-};
 
 const TextArea = (props: Props) => {
   const { form } = props;

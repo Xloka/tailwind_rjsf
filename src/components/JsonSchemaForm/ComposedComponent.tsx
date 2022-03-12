@@ -1,5 +1,6 @@
 import React from 'react'
 import utils from './utils'
+import { Props } from '../../type'
 
 const defaultValue = (props: Props) => {
   // check if there is a value in the model, if there is, display it. Otherwise, check if
@@ -19,18 +20,7 @@ const defaultValue = (props: Props) => {
   return value
 }
 
-type Props = {
-  errorText: any;
-  showErrors: boolean;
-  onChange: any;
-  form: any;
-  model: any;
-  value: any;
-  setDefault: any;
-  error: any;
-  onChangeValidate: any;
-  otherProps?: { multiline: boolean; rows: any; maxRows: any; };
-};
+
 
 const getDisplayName = (WrappedComponent: any) =>
   WrappedComponent.displayName || WrappedComponent.name || 'Component'

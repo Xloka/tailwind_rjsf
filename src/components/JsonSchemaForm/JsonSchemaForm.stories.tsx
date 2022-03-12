@@ -1,20 +1,8 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import JsonSchemaForm from ".";
+import { Props } from "../../type";
 
-type Props = {
-  onModelChange?: any;
-  errors?: any;
-  schema: any;
-  form: any;
-  ignore?: any;
-  option?: any;
-  model: any;
-  className?: any;
-  mapper?: any;
-  showErrors?: boolean;
-  evalContext?: any;
-};
 export default {
   title: "JsonSchemaForm",
   component: JsonSchemaForm,

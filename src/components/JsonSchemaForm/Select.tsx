@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Props } from "../../type";
 import ComposedComponent from "./ComposedComponent";
 import utils from "./utils";
 
-function Select(props: { form: any; model?: any; error?: any; setDefault?: any; onChange?: any; onChangeValidate?: any; }) {
+function Select(props: Props) {
   const {
     model,
     form,
@@ -31,7 +32,7 @@ function Select(props: { form: any; model?: any; error?: any; setDefault?: any; 
     setDefault(key, model, form, currentValue);
   }, []);
 
-  const onSelected = (event: { target: { value: any; }; }) => {
+  const onSelected = (event: { target: { value: any } }) => {
     const selectedValue = event.target.value;
     setCurrentValue(selectedValue);
     if (isObject) {
@@ -44,7 +45,7 @@ function Select(props: { form: any; model?: any; error?: any; setDefault?: any; 
     }
   };
 
-  const getLabel = (each: any ) => {
+  const getLabel = (each: any) => {
     if (displayFn) {
       return displayFn(each);
     }
@@ -53,19 +54,32 @@ function Select(props: { form: any; model?: any; error?: any; setDefault?: any; 
 
   let menuItems = [];
   if (isObject) {
-    menuItems = form.schema.enum.map((item: string | number | readonly string[] | undefined, idx: React.Key | null | undefined) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <option key={idx} value={item}>
-        {getLabel(item)}
-      </option>
-    ));
+    menuItems = form.schema.enum.map(
+      (
+        item: string | number | readonly string[] | undefined,
+        idx: React.Key | null | undefined
+      ) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <option key={idx} value={item}>
+          {getLabel(item)}
+        </option>
+      )
+    );
   } else {
-    menuItems = form.titleMap.map((item: {name:string , value: string | number | readonly string[] | undefined; }, idx: React.Key | null | undefined) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <option key={idx} value={item.value}>
-        {getLabel(item)}
-      </option>
-    ));
+    menuItems = form.titleMap.map(
+      (
+        item: {
+          name: string;
+          value: string | number | readonly string[] | undefined;
+        },
+        idx: React.Key | null | undefined
+      ) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <option key={idx} value={item.value}>
+          {getLabel(item)}
+        </option>
+      )
+    );
   }
 
   return (

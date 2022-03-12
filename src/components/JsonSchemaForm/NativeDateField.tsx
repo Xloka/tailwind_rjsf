@@ -1,12 +1,6 @@
 import React from 'react'
 import Text from './Text'
-
-type Props = {
-  onChangeValidate: any,
-  form: any,
-  value: any,
-  type: any,
-}
+import { Props } from '../../type'
 
 const NativeDateField = (props: Props) => {
   const {
