@@ -1,6 +1,6 @@
 {
   "name": "@xloka/tailwind_rjsf",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "description": "tailwind react json schema form",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -8,9 +8,6 @@
     "dist"
   ],
   "types": "dist/index.d.ts",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/Xloka"
-  },
   "scripts": {
     "rollup": "rollup -c",
     "test": "jest",

@@ -27,6 +27,7 @@ jobs:
       - run: npm run rollup
       - uses: JS-DevTools/npm-publish@v1
         with:
+          registry: https://npm.pkg.github.com/Xloka
           token: ${{ secrets.NPM_TOKEN }}
           access: "public"
       - uses: JS-DevTools/npm-publish@v1
