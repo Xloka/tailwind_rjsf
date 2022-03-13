@@ -15,6 +15,13 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 16
+      - run: echo "//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN" > .npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.email "a.saleh.ismael@gmail.com"
+          git config user.name "Ahmed Saleh"
       - run: npm install
       - run: npm test
       - run: npm run rollup
