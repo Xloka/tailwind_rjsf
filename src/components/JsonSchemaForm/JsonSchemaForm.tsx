@@ -101,14 +101,6 @@ class JsonSchemaForm extends Component<Props> {
       return null;
     }
 
-    // Apply conditionals to review if this field must be rendered
-    if (
-      form.condition &&
-      !utils.safeEval(form.condition, { model, form, ...evalContext })
-    ) {
-      return null;
-    }
-
     const key = (form.key && form.key.join(".")) || index;
 
     const error = errors && key in errors ? errors[key] : null;

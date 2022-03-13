@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import JsonSchemaForm from ".";
-import { Props } from "../../type";
+import { Props} from "./type";
 
 export default {
   title: "JsonSchemaForm",

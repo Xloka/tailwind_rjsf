@@ -1,6 +1,6 @@
 import React from 'react'
 import Text from './Text'
-import { Props } from '../../type'
+import { Props } from './type'
 
 const NativeDateField = (props: Props) => {
   const {

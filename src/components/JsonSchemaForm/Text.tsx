@@ -1,18 +1,6 @@
 import React from "react";
 import ComposedComponent from "./ComposedComponent";
-
-type Props = {
-  errorText: any;
-  showErrors: boolean;
-  onChange: any;
-  form: any;
-  model: any;
-  value: any;
-  setDefault: any;
-  error: any;
-  onChangeValidate: any;
-  otherProps?: { multiline: boolean; rows: any; maxRows: any };
-};
+import { Props} from "./type";
 
 class Text extends React.Component<Props> {
   static defaultProps: { otherProps: any };

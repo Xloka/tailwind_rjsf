@@ -1,7 +1,7 @@
 import React from "react";
 import ComposedComponent from "./ComposedComponent";
 import Text from "./Text";
-import { Props } from "../../type";
+import { Props} from "./type";
 
 
 const TextArea = (props: Props) => {

@@ -2,44 +2,102 @@ import isObject from "lodash/isObject";
 import cloneDeep from "lodash/cloneDeep";
 import extend from "lodash/extend";
 import isUndefined from "lodash/isUndefined";
-import ObjectPath from "objectpath";
 import tv4 from "tv4";
-import notevil from "notevil";
-type Options = {
-  path?: any;
-  lookup: { [x: string]: any };
-  global?: any;
-  required?: any;
-};
-type Schema = {
-  type: string;
-  title: any;
-  description: any;
-  maxLength: any;
-  minLength: any;
-  readOnly: any;
-  readonly: any;
-  minimum: any;
-  exclusiveMinimum: any;
-  maximum: number;
-  exclusiveMaximum: any;
-  validationMessage: any;
-  enumNames: any;
-  enum: any;
-  isObject: any;
-  items: any;
-  properties: { [x: string]: any };
-  required: any;
-};
+import { Schema, Options } from "./type";
 
-// Evaluates an expression in a safe way
-const safeEval = (condition: any, scope: any) => {
-  try {
-    const scopeSafe = cloneDeep(scope);
-    return notevil(condition, scopeSafe);
-  } catch (error) {
-    return undefined;
+const stringify = (arr: any[], quote?: string, forceQuote?: any) => {
+  if (!Array.isArray(arr)) arr = [arr];
+
+  quote = quote === '"' ? '"' : "'";
+  var regexp = new RegExp("(\\\\|" + quote + ")", "g"); // regex => /(\\|')/g
+
+  return arr
+    .map(function (value: { toString: () => any; }, key: number) {
+      let property = value.toString();
+      if (!forceQuote && /^[A-z_]\w*$/.exec(property)) {
+        // str with only A-z0-9_ chars will display `foo.bar`
+        return key !== 0 ? "." + property : property;
+      } else if (!forceQuote && /^\d+$/.exec(property)) {
+        // str with only numbers will display `foo[0]`
+        return "[" + property + "]";
+      } else {
+        property = property.replace(regexp, "\\$1");
+        return "[" + quote + property + quote + "]";
+      }
+    })
+    .join("");
+};
+const parse = (str: string) => {
+  if (typeof str !== "string") {
+    throw new TypeError("parse must be passed a string");
   }
+  var regex = {
+    "'": /\\\'/g,
+    '"': /\\\"/g,
+  };
+  var i = 0;
+  var parts = [];
+  var dot, bracket, quote, closing;
+  while (i < str.length) {
+    dot = str.indexOf(".", i);
+    bracket = str.indexOf("[", i);
+
+    // we've reached the end
+    if (dot === -1 && bracket === -1) {
+      parts.push(str.slice(i, str.length));
+      i = str.length;
+    }
+    // dots
+    else if (bracket === -1 || (dot !== -1 && dot < bracket)) {
+      parts.push(str.slice(i, dot));
+      i = dot + 1;
+    }
+    // brackets
+    else {
+      if (bracket > i) {
+        parts.push(str.slice(i, bracket));
+        i = bracket;
+      }
+      quote = str.slice(bracket + 1, bracket + 2);
+
+      if (quote !== '"' && quote !== "'") {
+        closing = str.indexOf("]", bracket);
+        if (closing === -1) {
+          closing = str.length;
+        }
+        parts.push(str.slice(i + 1, closing));
+        i =
+          str.slice(closing + 1, closing + 2) === "."
+            ? closing + 2
+            : closing + 1;
+      } else {
+        closing = str.indexOf(quote + "]", bracket);
+        if (closing === -1) {
+          closing = str.length;
+        }
+        while (
+          str.slice(closing - 1, closing) === "\\" &&
+          bracket < str.length
+        ) {
+          bracket++;
+          closing = str.indexOf(quote + "]", bracket);
+        }
+        parts.push(
+          str
+            .slice(i + 2, closing)
+            .replace(regex[quote], quote)
+            .replace(/\\+/g, function (backslash) {
+              return new Array(Math.ceil(backslash.length / 2) + 1).join("\\");
+            })
+        );
+        i =
+          str.slice(closing + 2, closing + 3) === "."
+            ? closing + 3
+            : closing + 2;
+      }
+    }
+  }
+  return parts;
 };
 
 const stripNullType = (type: string | any[]) => {
@@ -124,7 +182,7 @@ const tBoolean = (name: any, schema: Schema, options: Options) => {
     const f = stdFormObj(name, schema, options);
     f.key = options.path;
     f.type = "tBoolean";
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
     return f;
   }
   return undefined;
@@ -135,7 +193,7 @@ const text = (name: any, schema: Schema, options: Options) => {
     const f = stdFormObj(name, schema, options);
     f.key = options.path;
     f.type = "text";
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
     return f;
   }
   return undefined;
@@ -148,7 +206,7 @@ const number = (name: any, schema: Schema, options: Options) => {
     const f = stdFormObj(name, schema, options);
     f.key = options.path;
     f.type = "number";
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
     return f;
   }
   return undefined;
@@ -159,7 +217,7 @@ const integer = (name: any, schema: Schema, options: Options) => {
     const f = stdFormObj(name, schema, options);
     f.key = options.path;
     f.type = "number";
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
     return f;
   }
   return undefined;
@@ -170,7 +228,7 @@ const date = (name: any, schema: Schema, options: Options) => {
     const f = stdFormObj(name, schema, options);
     f.key = options.path;
     f.type = "date";
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
     return f;
   }
   return undefined;
@@ -181,7 +239,7 @@ const checkbox = (name: any, schema: Schema, options: Options) => {
     const f = stdFormObj(name, schema, options);
     f.key = options.path;
     f.type = "checkbox";
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
     return f;
   }
   return undefined;
@@ -195,7 +253,7 @@ const select = (name: any, schema: Schema, options: Options) => {
     if (!f.titleMap && !schema.isObject) {
       f.titleMap = enumToTitleMap(schema.enum);
     }
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
     return f;
   }
   return undefined;
@@ -222,7 +280,7 @@ const checkboxes = (name: any, schema: Schema, options: Options) => {
     if (!f.titleMap) {
       f.titleMap = enumToTitleMap(schema.items.enum);
     }
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
     return f;
   }
   return undefined;
@@ -270,7 +328,7 @@ const fieldset = (
     const f = stdFormObj(name, schema, options);
     f.type = "fieldset";
     f.items = [];
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
 
     // recurse down into properties
     if (schema.properties) {
@@ -278,7 +336,7 @@ const fieldset = (
         if (Object.prototype.hasOwnProperty.call(schema.properties, key)) {
           const path = options.path.slice();
           path.push(key);
-          if (options.ignore[ObjectPath.stringify(path)] !== true) {
+          if (options.ignore[stringify(path)] !== true) {
             const required =
               schema.required && schema.required.indexOf(key) !== -1;
 
@@ -315,7 +373,7 @@ const tuple = (
     const f = stdFormObj(name, schema, options);
     f.type = "tuple";
     f.key = options.path;
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
 
     if (Array.isArray(schema.items)) {
       const required =
@@ -360,7 +418,7 @@ const array = (
     const f = stdFormObj(name, schema, options);
     f.type = "array";
     f.key = options.path;
-    options.lookup[ObjectPath.stringify(options.path)] = f;
+    options.lookup[stringify(options.path)] = f;
 
     // don't do anything if items is not defined.
     if (typeof schema.items !== "undefined") {
@@ -570,13 +628,13 @@ const merge = (
       }
       if (obj && obj.key) {
         if (typeof obj.key === "string") {
-          obj.key = ObjectPath.parse(obj.key);
+          obj.key = parse(obj.key);
         }
       }
 
       if (obj && obj.itemForm) {
         obj.items = [];
-        const str = ObjectPath.stringify(obj.key);
+        const str = stringify(obj.key);
         const foundForm = lookup[str];
         foundForm.items.forEach((item: { key: any }) => {
           const o = cloneDeep(obj.itemForm);
@@ -587,7 +645,7 @@ const merge = (
 
       // extend with std form from schema.
       if (obj && obj.key) {
-        const strid = ObjectPath.stringify(obj.key);
+        const strid = stringify(obj.key);
         if (lookup[strid]) {
           const schemaDefaults = lookup[strid];
           Object.keys(schemaDefaults).forEach((key) => {
@@ -642,7 +700,7 @@ function selectOrSet(
   }
   // Support [] array syntax
   const parts =
-    typeof projection === "string" ? ObjectPath.parse(projection) : projection;
+    typeof projection === "string" ? parse(projection) : projection;
 
   if (typeof valueToSet !== "undefined" && parts.length === 1) {
     // special case, just setting one variable
@@ -709,7 +767,10 @@ const validate = (
     schema?: any;
   },
   value: any
-) => {
+):{
+  valid?: boolean;
+  error?: any;
+} => {
   if (!form) {
     return { valid: true };
   }
@@ -814,7 +875,6 @@ export default {
   merge,
   validate,
   validateBySchema,
-  safeEval,
   selectOrSet,
   getValueFromModel,
   getTitleByValue,

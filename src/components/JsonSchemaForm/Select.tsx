@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Props } from "../../type";
+import { Props} from "./type";
 import ComposedComponent from "./ComposedComponent";
 import utils from "./utils";
 

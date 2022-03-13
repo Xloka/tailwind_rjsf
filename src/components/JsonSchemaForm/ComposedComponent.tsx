@@ -1,6 +1,6 @@
 import React from 'react'
 import utils from './utils'
-import { Props } from '../../type'
+import { Props } from "./type";
 
 const defaultValue = (props: Props) => {
   // check if there is a value in the model, if there is, display it. Otherwise, check if
