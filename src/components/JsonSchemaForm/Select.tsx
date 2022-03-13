@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Props} from "./type";
+import { Props } from "./type";
 import ComposedComponent from "./ComposedComponent";
 import utils from "./utils";
 
-function Select(props: Props) {
+const Select = (props: Props) => {
   const {
     model,
     form,
@@ -99,6 +99,6 @@ function Select(props: Props) {
       <p {...form.helperTextProps}>{error || form.description}</p>
     </div>
   );
-}
+};
 
 export default ComposedComponent(Select);

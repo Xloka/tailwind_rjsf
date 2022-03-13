@@ -1,6 +1,6 @@
 {
   "name": "@xloka/tailwind_rjsf",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "tailwind react json schema form",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -70,6 +70,11 @@
     "tailwindcss": "^3.0.23",
     "typescript": "^4.6.2",
     "webpack": "^5.70.0"
+  },
+  "peerDependencies": {
+    "react": ">=^17.0.2",
+    "react-dom": ">=^17.0.2",
+    "react-is": ">=17.0.2"
   },
   "dependencies": {
     "classnames": "^2.3.1",
